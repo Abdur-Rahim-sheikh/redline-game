@@ -1,0 +1,15 @@
+{
+  "name": "redline-qr-game",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "A dependency-free, mobile-first reflex game made to launch from a QR code.",
+  "scripts": {
+    "dev": "python3 -m http.server 4173",
+    "test": "node --test",
+    "check": "node --check src/core.js && node --check src/audio.js && node --check src/game.js && node --check src/app.js && node --test"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

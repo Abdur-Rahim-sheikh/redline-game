@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#050813"/>
+      <stop offset=".65" stop-color="#11102c"/>
+      <stop offset="1" stop-color="#3a081d"/>
+    </linearGradient>
+    <radialGradient id="core" cx="40%" cy="35%">
+      <stop stop-color="#fff"/>
+      <stop offset=".22" stop-color="#9bf8ff"/>
+      <stop offset=".55" stop-color="#6078ff"/>
+      <stop offset=".82" stop-color="#d329ff"/>
+      <stop offset="1" stop-color="#ff3157" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="995" cy="320" r="350" fill="#ff3157" opacity=".08"/>
+  <g fill="none" stroke-width="4">
+    <ellipse cx="965" cy="315" rx="310" ry="156" stroke="#ff3157" opacity=".13"/>
+    <ellipse cx="965" cy="315" rx="245" ry="118" stroke="#70efff" opacity=".18"/>
+    <ellipse cx="965" cy="315" rx="178" ry="82" stroke="#9b6cff" opacity=".24"/>
+  </g>
+  <path d="M695 178h137M1093 178h107M710 458h122M1093 458h107" stroke="#ff3157" stroke-width="14"/>
+  <circle cx="965" cy="315" r="115" fill="url(#core)"/>
+  <circle cx="965" cy="315" r="10" fill="#fff"/>
+  <text x="72" y="170" fill="#fff" font-family="Impact,Arial Narrow,sans-serif" font-size="132" font-style="italic">RED<tspan fill="#ff3157">LINE</tspan></text>
+  <text x="80" y="253" fill="#ff9a73" font-family="Arial,sans-serif" font-size="28" font-weight="700" letter-spacing="4">HOLD. RUSH. SURVIVE.</text>
+  <text x="80" y="362" fill="#fff" font-family="Arial,sans-serif" font-size="53" font-weight="800">CAN YOU KEEP CONTROL?</text>
+  <text x="82" y="418" fill="#fff" opacity=".62" font-family="Arial,sans-serif" font-size="28">An instant one-touch reflex challenge.</text>
+  <rect x="80" y="475" width="405" height="67" rx="18" fill="#ff3157"/>
+  <text x="282" y="520" fill="#fff" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="800">NO APP • NO LOGIN</text>
+</svg>

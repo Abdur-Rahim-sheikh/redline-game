@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+    <meta name="theme-color" content="#080b13" />
+    <meta name="color-scheme" content="dark" />
+    <meta name="description" content="Hold to rush, drag through the gates, and see how long you can survive REDLINE." />
+    <meta property="og:title" content="REDLINE — Can you survive?" />
+    <meta property="og:description" content="An instant one-touch reflex challenge. No app. No login." />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="./assets/share-card.png" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" href="./assets/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./assets/icon-192.png" />
+    <link rel="stylesheet" href="./styles.css" />
+    <title>REDLINE — Can you survive?</title>
+  </head>
+  <body>
+    <main id="app" class="app-shell">
+      <canvas id="game" aria-label="REDLINE reflex game. Hold to rush and drag the energy core through each opening."></canvas>
+
+      <section id="hud" class="hud is-hidden" aria-live="off">
+        <div class="hud-stat">
+          <span class="hud-label">Score</span>
+          <strong id="score">0</strong>
+        </div>
+        <div class="hud-center">
+          <span id="multiplier" class="multiplier">×1.0</span>
+          <span id="boost-label" class="boost-label">HOLD TO RUSH</span>
+        </div>
+        <div class="hud-stat hud-stat--right">
+          <span class="hud-label">Rush</span>
+          <strong><span id="speed">1.0×</span></strong>
+        </div>
+      </section>
+
+      <button id="sound-button" class="icon-button" type="button" aria-label="Mute sound" aria-pressed="false">
+        <svg class="sound-on" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 9v6h4l5 4V5L8 9H4Zm12.5 3a4.5 4.5 0 0 0-2-3.74v7.48a4.5 4.5 0 0 0 2-3.74Zm-2-8.23v2.06a7 7 0 0 1 0 12.34v2.06a9 9 0 0 0 0-16.46Z" />
+        </svg>
+        <svg class="sound-off" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="m19.78 22.61-3.35-3.35c-.61.4-1.25.72-1.93.97v-2.06c.18-.08.35-.16.52-.25L13 15.9V19l-5-4H4V9h3.1L1.39 3.3l1.42-1.41 18.38 19.3-1.41 1.42ZM13 5v5.73L8.61 6.34 13 3v2Zm3.5 7c0-1.57-.8-2.96-2-3.74V6.03a6.52 6.52 0 0 1 3.46 7.43l-1.73-1.73c.18.08.27.17.27.27Zm4.5 0c0 1.33-.29 2.6-.82 3.73l-1.55-1.55A7.01 7.01 0 0 0 14.5 5.83V3.77A9 9 0 0 1 21 12Z" />
+        </svg>
+      </button>
+
+      <div id="message" class="game-message" role="status" aria-live="polite"></div>
+
+      <section id="start-screen" class="screen screen--start">
+        <div class="screen-panel">
+          <p class="eyebrow">One touch. No second chance.</p>
+          <h1>RED<span>LINE</span></h1>
+          <p class="tagline">Hold to rush. Drag through the gaps.<br />Release before it gets too fast.</p>
+
+          <div class="control-demo" aria-hidden="true">
+            <span class="control-arrow">←</span>
+            <span class="control-finger"></span>
+            <span class="control-arrow">→</span>
+          </div>
+          <p class="control-copy">Use one finger anywhere on the screen</p>
+
+          <button id="start-button" class="primary-button" type="button">
+            <span>Enter redline</span>
+          </button>
+          <p class="best-line">Best: <strong id="start-best">0</strong></p>
+        </div>
+      </section>
+
+      <section id="game-over-screen" class="screen screen--result is-hidden" aria-labelledby="result-title">
+        <div class="screen-panel result-panel">
+          <p id="result-kicker" class="eyebrow">Impact detected</p>
+          <h2 id="result-title">SIGNAL LOST</h2>
+          <div class="result-score">
+            <span>Score</span>
+            <strong id="final-score">0</strong>
+          </div>
+          <p id="new-best" class="new-best is-hidden">NEW PERSONAL BEST</p>
+          <p class="result-best">Best <strong id="result-best">0</strong> · <span id="run-time">0.0s</span></p>
+
+          <div class="result-actions">
+            <button id="restart-button" class="primary-button" type="button">Run again</button>
+            <button id="share-button" class="secondary-button" type="button">Share score</button>
+          </div>
+
+          <aside class="driving-card" aria-label="Driving lesson information">
+            <div class="driving-card__icon" aria-hidden="true">L</div>
+            <div>
+              <strong>Want to learn to drive?</strong>
+              <span>Naria, Shariatpur</span>
+            </div>
+            <a href="tel:+8801577602941" aria-label="Call 01577602941">01577602941</a>
+          </aside>
+        </div>
+      </section>
+
+      <div id="rotate-note" class="rotate-note" aria-hidden="true">Best played in portrait</div>
+      <div id="install-toast" class="install-toast" role="status"></div>
+    </main>
+
+    <noscript>This game needs JavaScript enabled.</noscript>
+    <script type="module" src="./src/app.js"></script>
+  </body>
+</html>

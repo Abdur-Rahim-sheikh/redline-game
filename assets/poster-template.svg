@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2480" height="3508" viewBox="0 0 2480 3508">
+  <defs>
+    <linearGradient id="poster-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#050813"/>
+      <stop offset=".58" stop-color="#11102c"/>
+      <stop offset="1" stop-color="#43081e"/>
+    </linearGradient>
+    <radialGradient id="poster-core" cx="40%" cy="35%">
+      <stop stop-color="#fff"/>
+      <stop offset=".2" stop-color="#9bf8ff"/>
+      <stop offset=".52" stop-color="#6078ff"/>
+      <stop offset=".8" stop-color="#d329ff"/>
+      <stop offset="1" stop-color="#ff3157" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="red-glow"><feGaussianBlur stdDeviation="38"/></filter>
+  </defs>
+  <rect width="2480" height="3508" fill="url(#poster-bg)"/>
+  <circle cx="1240" cy="2010" r="980" fill="#ff3157" opacity=".1" filter="url(#red-glow)"/>
+  <g fill="none" stroke-width="12">
+    <ellipse cx="1240" cy="2020" rx="1060" ry="520" stroke="#ff3157" opacity=".1"/>
+    <ellipse cx="1240" cy="2020" rx="840" ry="400" stroke="#69efff" opacity=".12"/>
+    <ellipse cx="1240" cy="2020" rx="620" ry="285" stroke="#9b6cff" opacity=".17"/>
+  </g>
+  <circle cx="1240" cy="2020" r="430" fill="url(#poster-core)" opacity=".65"/>
+  <path d="M120 1420h560M1800 1420h560M120 2600h560M1800 2600h560" stroke="#ff3157" stroke-width="32" opacity=".78"/>
+  <text x="1240" y="440" text-anchor="middle" fill="#ff8c69" font-family="Arial,sans-serif" font-size="62" font-weight="800" letter-spacing="18">ONE TOUCH. NO SECOND CHANCE.</text>
+  <text x="1240" y="880" text-anchor="middle" fill="#fff" font-family="Impact,Arial Narrow,sans-serif" font-size="390" font-style="italic">RED<tspan fill="#ff3157">LINE</tspan></text>
+  <text x="1240" y="1120" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="110" font-weight="900">CAN YOU SURVIVE 30 SECONDS?</text>
+  <text x="1240" y="1270" text-anchor="middle" fill="#fff" opacity=".6" font-family="Arial,sans-serif" font-size="60">Hold to rush • Drag through the gaps</text>
+
+  <rect x="710" y="1500" width="1060" height="1060" rx="86" fill="#fff"/>
+  <rect x="790" y="1580" width="900" height="900" rx="26" fill="#f1f1f1" stroke="#151923" stroke-width="12" stroke-dasharray="30 24"/>
+  <text x="1240" y="1960" text-anchor="middle" fill="#171b25" font-family="Arial,sans-serif" font-size="66" font-weight="900">PLACE YOUR</text>
+  <text x="1240" y="2070" text-anchor="middle" fill="#ff3157" font-family="Arial,sans-serif" font-size="116" font-weight="900">QR CODE</text>
+  <text x="1240" y="2180" text-anchor="middle" fill="#171b25" opacity=".58" font-family="Arial,sans-serif" font-size="48">after deployment</text>
+
+  <rect x="555" y="2720" width="1370" height="180" rx="60" fill="#ff3157"/>
+  <text x="1240" y="2840" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="66" font-weight="900" letter-spacing="5">SCAN • PLAY INSTANTLY</text>
+  <text x="1240" y="3035" text-anchor="middle" fill="#fff" opacity=".7" font-family="Arial,sans-serif" font-size="54" font-weight="700">NO APP. NO LOGIN. COMPLETELY FREE.</text>
+  <line x1="390" y1="3200" x2="2090" y2="3200" stroke="#fff" opacity=".12" stroke-width="4"/>
+  <text x="1240" y="3295" text-anchor="middle" fill="#fff" opacity=".62" font-family="Arial,sans-serif" font-size="46">Want to learn to drive? Naria, Shariatpur</text>
+  <text x="1240" y="3375" text-anchor="middle" fill="#ff8f9c" font-family="Arial,sans-serif" font-size="54" font-weight="900">01577602941</text>
+</svg>

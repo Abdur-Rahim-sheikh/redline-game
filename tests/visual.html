@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="../styles.css" />
+    <title>REDLINE visual test</title>
+  </head>
+  <body>
+    <main class="app-shell">
+      <canvas id="game"></canvas>
+      <pre id="visual-status" style="position:fixed;z-index:99;left:8px;bottom:8px;color:#00ff88;background:#001;padding:8px">loading</pre>
+      <div hidden>
+        <span id="score"></span>
+        <span id="speed"></span>
+        <span id="multiplier"></span>
+        <span id="boost-label"></span>
+        <button id="sound-button"></button>
+        <span id="message"></span>
+      </div>
+    </main>
+    <script type="module">
+      const byId = (id) => document.getElementById(id);
+      const status = byId("visual-status");
+      globalThis.addEventListener("error", (event) => {
+        status.textContent = `${event.error?.name}: ${event.message}\n${event.error?.stack ?? ""}`;
+        status.style.color = "#fff";
+        status.style.background = "#c00";
+      });
+      globalThis.addEventListener("unhandledrejection", (event) => {
+        status.textContent = `Promise: ${event.reason?.message ?? event.reason}`;
+        status.style.color = "#fff";
+        status.style.background = "#c00";
+      });
+      try {
+        const { RedlineGame } = await import("../src/game.js");
+        const game = new RedlineGame(byId("game"), {
+          score: byId("score"),
+          speed: byId("speed"),
+          multiplier: byId("multiplier"),
+          boostLabel: byId("boost-label"),
+          soundButton: byId("sound-button"),
+          message: byId("message"),
+        });
+        game.start();
+        status.textContent = "rendering";
+      } catch (error) {
+        status.textContent = `${error.name}: ${error.message}\n${error.stack}`;
+        status.style.color = "#fff";
+        status.style.background = "#c00";
+      }
+      await new Promise((resolve) => globalThis.setTimeout(resolve, 1000));
+    </script>
+  </body>
+</html>
