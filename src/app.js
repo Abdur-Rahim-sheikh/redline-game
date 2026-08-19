@@ -1,5 +1,5 @@
 import { formatScore } from "./core.js";
-import { RedlineGame } from "./game.js";
+import { CrowFlightGame } from "./game.js";
 
 const byId = (id) => document.getElementById(id);
 
@@ -7,9 +7,7 @@ const elements = {
   canvas: byId("game"),
   hud: byId("hud"),
   score: byId("score"),
-  speed: byId("speed"),
-  multiplier: byId("multiplier"),
-  boostLabel: byId("boost-label"),
+  hudBest: byId("hud-best"),
   soundButton: byId("sound-button"),
   message: byId("message"),
   startScreen: byId("start-screen"),
@@ -23,6 +21,7 @@ const elements = {
   newBest: byId("new-best"),
   runTime: byId("run-time"),
   resultKicker: byId("result-kicker"),
+  scoreUnit: byId("score-unit"),
   toast: byId("install-toast"),
 };
 
@@ -30,7 +29,7 @@ let latestResult = { score: 0, bestScore: 0, elapsed: 0 };
 let latestScoreCard = null;
 let toastTimer = 0;
 
-const game = new RedlineGame(elements.canvas, elements, {
+const game = new CrowFlightGame(elements.canvas, elements, {
   onStart() {
     elements.startScreen.classList.add("is-hidden");
     elements.gameOverScreen.classList.add("is-hidden");
@@ -44,10 +43,12 @@ const game = new RedlineGame(elements.canvas, elements, {
       latestScoreCard = blob;
     });
     elements.finalScore.textContent = formatScore(result.score);
+    elements.scoreUnit.textContent = result.score === 1 ? "branch cleared" : "branches cleared";
     elements.resultBest.textContent = formatScore(result.bestScore);
     elements.runTime.textContent = `${result.elapsed.toFixed(1)}s`;
     elements.newBest.classList.toggle("is-hidden", !result.isNewBest);
-    elements.resultKicker.textContent = result.isNewBest ? "You moved the redline" : "Core destabilized";
+    elements.resultKicker.textContent = result.isNewBest ? "That crow can fly" : "Branch clipped";
+    elements.startBest.textContent = formatScore(result.bestScore);
     elements.hud.classList.add("is-hidden");
     elements.gameOverScreen.classList.remove("is-hidden");
     elements.restartButton.focus?.({ preventScroll: true });
@@ -55,9 +56,20 @@ const game = new RedlineGame(elements.canvas, elements, {
 });
 
 elements.startBest.textContent = formatScore(game.bestScore);
-
-elements.startButton.addEventListener("click", () => game.start());
-elements.restartButton.addEventListener("click", () => game.start());
+elements.startButton.disabled = true;
+elements.startButton.textContent = "Loading flight…";
+void game.ready.then(() => {
+  elements.startButton.disabled = false;
+  elements.startButton.textContent = "Start flying";
+});
+elements.startButton.addEventListener("click", async () => {
+  await game.ready;
+  game.start();
+});
+elements.restartButton.addEventListener("click", async () => {
+  await game.ready;
+  game.start();
+});
 elements.soundButton.addEventListener("click", () => {
   const muted = game.toggleSound();
   showToast(muted ? "Sound off" : "Sound on");
@@ -74,28 +86,27 @@ function showToast(message) {
 async function shareScore(result) {
   const gameUrl = new URL(globalThis.location.href);
   gameUrl.hash = "";
-  const shareText = `I scored ${formatScore(result.score)} in REDLINE and survived ${result.elapsed.toFixed(1)} seconds. Can you beat me?`;
+  const unit = result.score === 1 ? "branch" : "branches";
+  const shareText = `My crow cleared ${formatScore(result.score)} koroi ${unit} in KAK URAAN. Can you fly farther?`;
   const shareData = {
-    title: "REDLINE — Can you beat my score?",
+    title: "KAK URAAN — Can you beat my flight?",
     text: shareText,
     url: gameUrl.href,
   };
 
   try {
     if (latestScoreCard && globalThis.File && navigator.canShare) {
-      const scoreFile = new File([latestScoreCard], "redline-score.png", { type: "image/png" });
+      const scoreFile = new File([latestScoreCard], "kak-uraan-score.png", { type: "image/png" });
       const fileShareData = { ...shareData, files: [scoreFile] };
       if (navigator.canShare(fileShareData)) {
         await navigator.share(fileShareData);
         return;
       }
     }
-
     if (navigator.share) {
       await navigator.share(shareData);
       return;
     }
-
     await navigator.clipboard.writeText(`${shareText} ${gameUrl.href}`);
     showToast("Score and link copied");
   } catch (error) {
@@ -104,93 +115,86 @@ async function shareScore(result) {
         await navigator.clipboard.writeText(`${shareText} ${gameUrl.href}`);
         showToast("Score and link copied");
       } catch {
-        showToast("Copy the page link to share your score");
+        showToast("Copy the page link to share your flight");
       }
     }
   }
 }
 
-function createScoreCard(result) {
-  return new Promise((resolve) => {
-    const canvas = document.createElement("canvas");
-    canvas.width = 1200;
-    canvas.height = 630;
-    const context = canvas.getContext("2d");
+async function createScoreCard(result) {
+  const canvas = document.createElement("canvas");
+  canvas.width = 1200;
+  canvas.height = 630;
+  const context = canvas.getContext("2d");
+  const background = context.createLinearGradient(0, 0, 0, 630);
+  background.addColorStop(0, "#73cfe2");
+  background.addColorStop(0.68, "#c9ebd9");
+  background.addColorStop(1, "#e9d48d");
+  context.fillStyle = background;
+  context.fillRect(0, 0, 1200, 630);
 
-    const background = context.createLinearGradient(0, 0, 1200, 630);
-    background.addColorStop(0, "#050813");
-    background.addColorStop(0.62, "#11182b");
-    background.addColorStop(1, "#300713");
-    context.fillStyle = background;
-    context.fillRect(0, 0, 1200, 630);
+  context.fillStyle = "rgba(255,247,196,.9)";
+  context.beginPath();
+  context.arc(1020, 112, 74, 0, Math.PI * 2);
+  context.fill();
+  context.fillStyle = "#7eae68";
+  context.fillRect(0, 530, 1200, 100);
+  context.fillStyle = "#98c77b";
+  context.beginPath();
+  context.moveTo(0, 540);
+  for (let x = 0; x <= 1200; x += 55) context.lineTo(x, 510 - Math.abs(Math.sin(x * 0.018)) * 34);
+  context.lineTo(1200, 630);
+  context.lineTo(0, 630);
+  context.fill();
 
-    const vortexX = 965;
-    const vortexY = 305;
-    context.fillStyle = "rgba(255,49,101,.11)";
-    context.beginPath();
-    context.arc(vortexX, vortexY, 350, 0, Math.PI * 2);
-    context.fill();
+  const [crow, topBranch, bottomBranch] = await Promise.all([
+    loadImage(new URL("../assets/crow-sprites-v3.webp", import.meta.url)),
+    loadImage(new URL("../assets/koroi-top-game.webp", import.meta.url)),
+    loadImage(new URL("../assets/koroi-bottom-game.webp", import.meta.url)),
+  ]);
+  context.drawImage(topBranch, 900, -55, 230, 345);
+  context.drawImage(bottomBranch, 940, 340, 220, 350);
+  context.drawImage(crow, 320, 0, 320, 320, 770, 230, 170, 170);
 
-    for (let index = 0; index < 7; index += 1) {
-      context.strokeStyle = `rgba(${index % 2 ? "255,49,101" : "90,235,255"},${0.1 + index * 0.025})`;
-      context.lineWidth = 3;
-      context.beginPath();
-      context.ellipse(vortexX, vortexY, 80 + index * 48, 32 + index * 24, -0.15, 0, Math.PI * 2);
-      context.stroke();
-    }
+  context.fillStyle = "#172333";
+  context.font = "900 98px system-ui, sans-serif";
+  context.fillText("KAK", 65, 125);
+  const kakWidth = context.measureText("KAK").width;
+  context.fillStyle = "#2e7148";
+  context.fillText("URAAN", 65 + kakWidth + 22, 125);
+  context.fillStyle = "rgba(23,35,51,.62)";
+  context.font = "700 25px system-ui, sans-serif";
+  context.fillText("MY BEST FLIGHT", 72, 205);
+  context.fillStyle = "#172333";
+  context.font = "900 144px system-ui, sans-serif";
+  context.fillText(formatScore(result.score), 65, 352);
+  context.fillStyle = "#2e7148";
+  context.font = "850 31px system-ui, sans-serif";
+  context.fillText(result.score === 1 ? "KOROI BRANCH CLEARED" : "KOROI BRANCHES CLEARED", 75, 404);
+  context.fillStyle = "#172333";
+  context.font = "850 35px system-ui, sans-serif";
+  context.fillText("CAN YOUR CROW FLY FARTHER?", 72, 480);
+  context.fillStyle = "rgba(23,35,51,.58)";
+  context.font = "600 19px system-ui, sans-serif";
+  context.fillText("Tap to flap • No app • No login", 74, 518);
+  context.font = "600 18px system-ui, sans-serif";
+  context.fillText("Driving lessons • Naria, Shariatpur • 01577602941", 72, 596);
+  return new Promise((resolve) => canvas.toBlob(resolve, "image/png", 0.92));
+}
 
-    const coreGlow = context.createRadialGradient(vortexX, vortexY, 0, vortexX, vortexY, 92);
-    coreGlow.addColorStop(0, "#ffffff");
-    coreGlow.addColorStop(0.24, "#93f9ff");
-    coreGlow.addColorStop(0.58, "#5d74ff");
-    coreGlow.addColorStop(1, "rgba(255,49,101,0)");
-    context.fillStyle = coreGlow;
-    context.beginPath();
-    context.arc(vortexX, vortexY, 92, 0, Math.PI * 2);
-    context.fill();
-
-    context.fillStyle = "#ff3157";
-    context.fillRect(740, 176, 150, 14);
-    context.fillRect(1040, 176, 150, 14);
-    context.fillRect(770, 439, 118, 12);
-    context.fillRect(1042, 439, 126, 12);
-
-    context.font = "italic 900 112px Impact, Arial Narrow, sans-serif";
-    context.fillStyle = "#ffffff";
-    context.fillText("RED", 72, 142);
-    const redWidth = context.measureText("RED").width;
-    context.fillStyle = "#ff3147";
-    context.fillText("LINE", 72 + redWidth, 142);
-
-    context.fillStyle = "rgba(255,255,255,.58)";
-    context.font = "800 24px system-ui, sans-serif";
-    context.fillText("MY SCORE", 78, 222);
-    context.fillStyle = "#ffffff";
-    context.font = "900 138px system-ui, sans-serif";
-    context.fillText(formatScore(result.score), 70, 360);
-    context.fillStyle = "#ff9a55";
-    context.font = "800 31px system-ui, sans-serif";
-    context.fillText(`SURVIVED ${result.elapsed.toFixed(1)} SECONDS`, 78, 415);
-
-    context.fillStyle = "#ffffff";
-    context.font = "850 35px system-ui, sans-serif";
-    context.fillText("CAN YOU BEAT ME?", 78, 505);
-    context.fillStyle = "rgba(255,255,255,.5)";
-    context.font = "600 20px system-ui, sans-serif";
-    context.fillText("Hold to rush • Drag through the gaps", 80, 544);
-
-    context.fillStyle = "rgba(255,255,255,.58)";
-    context.font = "600 18px system-ui, sans-serif";
-    context.fillText("Driving lessons • Naria, Shariatpur • 01577602941", 78, 594);
-
-    canvas.toBlob(resolve, "image/png", 0.92);
+function loadImage(url) {
+  return new Promise((resolve, reject) => {
+    const image = new Image();
+    image.onload = () => resolve(image);
+    image.onerror = reject;
+    image.src = url.href;
   });
 }
 
 if ("serviceWorker" in navigator && globalThis.location.protocol.startsWith("http")) {
   globalThis.addEventListener("load", () => {
     navigator.serviceWorker.register(new URL("../sw.js", import.meta.url)).catch(() => {
-      // The game remains fully usable when private browsing or a host blocks service workers.
+      // The game remains usable if private browsing or a host blocks service workers.
     });
   });
 }

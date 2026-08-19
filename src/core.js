@@ -10,43 +10,33 @@ export function smoothTowards(current, target, responsiveness, deltaSeconds) {
   return lerp(current, target, 1 - Math.exp(-responsiveness * deltaSeconds));
 }
 
-export function rectangleOverlap(first, second, inset = 0) {
-  return (
-    first.x + inset < second.x + second.width - inset &&
-    first.x + first.width - inset > second.x + inset &&
-    first.y + inset < second.y + second.height - inset &&
-    first.y + first.height - inset > second.y + inset
-  );
-}
-
 export function formatScore(score) {
   return Math.max(0, Math.floor(score)).toLocaleString("en-US");
 }
 
-export function createGatePattern(difficulty, previousCenter = null, random = Math.random) {
+export function createBranchGap(difficulty, previousCenter = null, random = Math.random) {
   const safeDifficulty = clamp(difficulty, 0, 1);
-  const gapWidth = clamp(lerp(0.44, 0.285, safeDifficulty) + (random() - 0.5) * 0.025, 0.27, 0.46);
-  const edgeInset = gapWidth / 2 + 0.045;
+  const size = clamp(lerp(0.27, 0.205, safeDifficulty) + (random() - 0.5) * 0.012, 0.2, 0.28);
+  const edgeInset = size / 2 + 0.105;
   const sampledCenter = lerp(edgeInset, 1 - edgeInset, random());
 
   if (previousCenter === null || !Number.isFinite(previousCenter)) {
-    return { center: sampledCenter, width: gapWidth };
+    return { center: sampledCenter, size };
   }
 
-  const maximumShift = lerp(0.34, 0.46, safeDifficulty);
-  const reachableCenter = clamp(sampledCenter, previousCenter - maximumShift, previousCenter + maximumShift);
+  const maximumShift = lerp(0.17, 0.225, safeDifficulty);
   return {
-    center: clamp(reachableCenter, edgeInset, 1 - edgeInset),
-    width: gapWidth,
+    center: clamp(sampledCenter, previousCenter - maximumShift, previousCenter + maximumShift),
+    size,
   };
 }
 
-export function circleIntersectsGate(circle, gate) {
-  const verticalDistance = Math.abs(circle.y - gate.y);
-  if (verticalDistance >= circle.radius * 0.78 + gate.thickness / 2) return false;
-
-  const collisionRadius = circle.radius * 0.7;
-  return circle.x - collisionRadius < gate.gapLeft || circle.x + collisionRadius > gate.gapRight;
+export function ellipseIntersectsRectangle(ellipse, rectangle) {
+  const nearestX = clamp(ellipse.x, rectangle.x, rectangle.x + rectangle.width);
+  const nearestY = clamp(ellipse.y, rectangle.y, rectangle.y + rectangle.height);
+  const normalizedX = (ellipse.x - nearestX) / ellipse.radiusX;
+  const normalizedY = (ellipse.y - nearestY) / ellipse.radiusY;
+  return normalizedX * normalizedX + normalizedY * normalizedY <= 1;
 }
 
 export function safeStorage(storage = globalThis.localStorage) {

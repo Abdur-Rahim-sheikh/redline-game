@@ -1,8 +1,8 @@
-const CACHE_NAME = "redline-v2.0.1";
+const CACHE_NAME = "kak-uraan-v1.0.2";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./styles.css",
+  "./styles.css?v=1.0.2",
   "./src/app.js",
   "./src/game.js",
   "./src/audio.js",
@@ -12,6 +12,10 @@ const APP_SHELL = [
   "./assets/icon-192.png",
   "./assets/icon-512.png",
   "./assets/share-card.png",
+  "./assets/bd-driving-car.webp",
+  "./assets/crow-sprites-v3.webp",
+  "./assets/koroi-top-game.webp",
+  "./assets/koroi-bottom-game.webp"
 ];
 
 self.addEventListener("install", (event) => {

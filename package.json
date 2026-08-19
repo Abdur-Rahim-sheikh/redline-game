@@ -1,9 +1,9 @@
 {
-  "name": "redline-qr-game",
+  "name": "kak-uraan-qr-game",
   "version": "1.0.0",
   "private": true,
   "type": "module",
-  "description": "A dependency-free, mobile-first reflex game made to launch from a QR code.",
+  "description": "A dependency-free, tap-to-fly crow game made to launch from a QR code.",
   "scripts": {
     "dev": "python3 -m http.server 4173",
     "test": "node --test",

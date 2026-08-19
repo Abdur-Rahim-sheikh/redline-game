@@ -2,11 +2,10 @@ import test from "node:test";
 import assert from "node:assert/strict";
 
 import {
-  circleIntersectsGate,
   clamp,
-  createGatePattern,
+  createBranchGap,
+  ellipseIntersectsRectangle,
   formatScore,
-  rectangleOverlap,
   safeStorage,
   smoothTowards,
 } from "../src/core.js";
@@ -23,47 +22,33 @@ test("smoothTowards approaches without overshooting", () => {
   assert.ok(result < 100);
 });
 
-test("rectangle overlap accounts for a collision inset", () => {
-  const a = { x: 0, y: 0, width: 20, height: 20 };
-  const b = { x: 18, y: 0, width: 20, height: 20 };
-  assert.equal(rectangleOverlap(a, b), true);
-  assert.equal(rectangleOverlap(a, b, 2), false);
-});
-
-test("gate patterns use continuous positions instead of fixed lanes", () => {
-  const sequence = [0.5, 0.73];
-  const result = createGatePattern(0.5, null, () => sequence.shift());
+test("branch gaps can appear at continuous vertical positions", () => {
+  const sequence = [0.5, 0.72];
+  const result = createBranchGap(0.5, null, () => sequence.shift());
   assert.ok(result.center > 0.5);
   assert.ok(result.center < 0.8);
-  assert.ok(result.width > 0.34);
-  assert.ok(result.width < 0.38);
+  assert.ok(result.size > 0.23);
+  assert.ok(result.size < 0.25);
 });
 
-test("successive gates limit movement to a reachable horizontal shift", () => {
-  const result = createGatePattern(0, 0.2, () => 1);
-  assert.ok(result.center <= 0.54);
-  assert.ok(result.center >= result.width / 2);
+test("successive gaps limit the vertical jump to a reachable shift", () => {
+  const result = createBranchGap(0, 0.3, () => 1);
+  assert.ok(result.center <= 0.47);
 });
 
-test("a core inside a gate opening is safe", () => {
-  const core = { x: 100, y: 200, radius: 16 };
-  const gate = { y: 200, gapLeft: 75, gapRight: 125, thickness: 14 };
-  assert.equal(circleIntersectsGate(core, gate), false);
+test("crow ellipse collides with a touching branch rectangle", () => {
+  const crow = { x: 100, y: 100, radiusX: 20, radiusY: 14 };
+  const branch = { x: 115, y: 90, width: 40, height: 40 };
+  assert.equal(ellipseIntersectsRectangle(crow, branch), true);
 });
 
-test("a core touching the solid part of a gate collides", () => {
-  const core = { x: 70, y: 200, radius: 16 };
-  const gate = { y: 200, gapLeft: 75, gapRight: 125, thickness: 14 };
-  assert.equal(circleIntersectsGate(core, gate), true);
+test("crow ellipse remains safe away from a branch rectangle", () => {
+  const crow = { x: 100, y: 100, radiusX: 20, radiusY: 14 };
+  const branch = { x: 130, y: 90, width: 40, height: 40 };
+  assert.equal(ellipseIntersectsRectangle(crow, branch), false);
 });
 
-test("a gate cannot collide before reaching the core vertically", () => {
-  const core = { x: 30, y: 200, radius: 16 };
-  const gate = { y: 100, gapLeft: 75, gapRight: 125, thickness: 14 };
-  assert.equal(circleIntersectsGate(core, gate), false);
-});
-
-test("score formatting discards unsafe negative and fractional display values", () => {
+test("score formatting discards negative and fractional display values", () => {
   assert.equal(formatScore(-5), "0");
   assert.equal(formatScore(1234.9), "1,234");
 });

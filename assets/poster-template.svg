@@ -1,43 +1,41 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="2480" height="3508" viewBox="0 0 2480 3508">
   <defs>
-    <linearGradient id="poster-bg" x1="0" y1="0" x2="1" y2="1">
-      <stop stop-color="#050813"/>
-      <stop offset=".58" stop-color="#11102c"/>
-      <stop offset="1" stop-color="#43081e"/>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#73cfe2"/>
+      <stop offset=".7" stop-color="#c9ebd9"/>
+      <stop offset="1" stop-color="#ead18b"/>
     </linearGradient>
-    <radialGradient id="poster-core" cx="40%" cy="35%">
-      <stop stop-color="#fff"/>
-      <stop offset=".2" stop-color="#9bf8ff"/>
-      <stop offset=".52" stop-color="#6078ff"/>
-      <stop offset=".8" stop-color="#d329ff"/>
-      <stop offset="1" stop-color="#ff3157" stop-opacity="0"/>
-    </radialGradient>
-    <filter id="red-glow"><feGaussianBlur stdDeviation="38"/></filter>
   </defs>
-  <rect width="2480" height="3508" fill="url(#poster-bg)"/>
-  <circle cx="1240" cy="2010" r="980" fill="#ff3157" opacity=".1" filter="url(#red-glow)"/>
-  <g fill="none" stroke-width="12">
-    <ellipse cx="1240" cy="2020" rx="1060" ry="520" stroke="#ff3157" opacity=".1"/>
-    <ellipse cx="1240" cy="2020" rx="840" ry="400" stroke="#69efff" opacity=".12"/>
-    <ellipse cx="1240" cy="2020" rx="620" ry="285" stroke="#9b6cff" opacity=".17"/>
+  <rect width="2480" height="3508" fill="url(#sky)"/>
+  <circle cx="2050" cy="410" r="190" fill="#fff0ad" opacity=".9"/>
+  <path d="M-80-50c255 171 360 367 406 622 21 117 96 178 221 215l-72 151C291 902 162 813 135 644 105 459 29 363-80 278Z" fill="#5b4935"/>
+  <path d="M2560 3530c-257-170-361-367-407-622-21-117-96-178-221-215l72-151c184 36 313 125 340 294 30 185 106 281 216 366Z" fill="#5b4935"/>
+  <g fill="#3f7b45">
+    <circle cx="190" cy="470" r="120"/><circle cx="340" cy="650" r="115"/><circle cx="2180" cy="2840" r="120"/><circle cx="2045" cy="2680" r="110"/>
   </g>
-  <circle cx="1240" cy="2020" r="430" fill="url(#poster-core)" opacity=".65"/>
-  <path d="M120 1420h560M1800 1420h560M120 2600h560M1800 2600h560" stroke="#ff3157" stroke-width="32" opacity=".78"/>
-  <text x="1240" y="440" text-anchor="middle" fill="#ff8c69" font-family="Arial,sans-serif" font-size="62" font-weight="800" letter-spacing="18">ONE TOUCH. NO SECOND CHANCE.</text>
-  <text x="1240" y="880" text-anchor="middle" fill="#fff" font-family="Impact,Arial Narrow,sans-serif" font-size="390" font-style="italic">RED<tspan fill="#ff3157">LINE</tspan></text>
-  <text x="1240" y="1120" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="110" font-weight="900">CAN YOU SURVIVE 30 SECONDS?</text>
-  <text x="1240" y="1270" text-anchor="middle" fill="#fff" opacity=".6" font-family="Arial,sans-serif" font-size="60">Hold to rush • Drag through the gaps</text>
+  <text x="1240" y="380" text-anchor="middle" fill="#2e7148" font-family="Arial,sans-serif" font-size="62" font-weight="850" letter-spacing="17">ONE TAP. ONE FLAP.</text>
+  <text x="1240" y="805" text-anchor="middle" fill="#172333" font-family="Impact,Arial Narrow,sans-serif" font-size="360" font-style="italic">KAK <tspan fill="#2e7148">URAAN</tspan></text>
+  <text x="1240" y="1040" text-anchor="middle" fill="#172333" font-family="Arial,sans-serif" font-size="103" font-weight="900">HOW FAR CAN YOUR CROW FLY?</text>
+  <text x="1240" y="1185" text-anchor="middle" fill="#172333" opacity=".62" font-family="Arial,sans-serif" font-size="59">Tap to flap • Avoid the koroi branches</text>
 
-  <rect x="710" y="1500" width="1060" height="1060" rx="86" fill="#fff"/>
-  <rect x="790" y="1580" width="900" height="900" rx="26" fill="#f1f1f1" stroke="#151923" stroke-width="12" stroke-dasharray="30 24"/>
-  <text x="1240" y="1960" text-anchor="middle" fill="#171b25" font-family="Arial,sans-serif" font-size="66" font-weight="900">PLACE YOUR</text>
-  <text x="1240" y="2070" text-anchor="middle" fill="#ff3157" font-family="Arial,sans-serif" font-size="116" font-weight="900">QR CODE</text>
-  <text x="1240" y="2180" text-anchor="middle" fill="#171b25" opacity=".58" font-family="Arial,sans-serif" font-size="48">after deployment</text>
+  <rect x="710" y="1395" width="1060" height="1060" rx="86" fill="#fffdf0" stroke="#fff" stroke-width="12"/>
+  <rect x="790" y="1475" width="900" height="900" rx="26" fill="#f7f6ed" stroke="#172333" stroke-width="12" stroke-dasharray="30 24"/>
+  <text x="1240" y="1850" text-anchor="middle" fill="#172333" font-family="Arial,sans-serif" font-size="66" font-weight="900">PLACE YOUR</text>
+  <text x="1240" y="1960" text-anchor="middle" fill="#2e7148" font-family="Arial,sans-serif" font-size="116" font-weight="900">QR CODE</text>
+  <text x="1240" y="2070" text-anchor="middle" fill="#172333" opacity=".55" font-family="Arial,sans-serif" font-size="48">after deployment</text>
 
-  <rect x="555" y="2720" width="1370" height="180" rx="60" fill="#ff3157"/>
-  <text x="1240" y="2840" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="66" font-weight="900" letter-spacing="5">SCAN • PLAY INSTANTLY</text>
-  <text x="1240" y="3035" text-anchor="middle" fill="#fff" opacity=".7" font-family="Arial,sans-serif" font-size="54" font-weight="700">NO APP. NO LOGIN. COMPLETELY FREE.</text>
-  <line x1="390" y1="3200" x2="2090" y2="3200" stroke="#fff" opacity=".12" stroke-width="4"/>
-  <text x="1240" y="3295" text-anchor="middle" fill="#fff" opacity=".62" font-family="Arial,sans-serif" font-size="46">Want to learn to drive? Naria, Shariatpur</text>
-  <text x="1240" y="3375" text-anchor="middle" fill="#ff8f9c" font-family="Arial,sans-serif" font-size="54" font-weight="900">01577602941</text>
+  <g transform="translate(1240 2605)" fill="#121927">
+    <ellipse rx="150" ry="68"/>
+    <path d="M-76-15c-108-131-158-155-191-126 60 53 99 116 121 189Z"/>
+    <path d="M-61 17c-113 69-151 112-158 151 67-18 125-53 166-98Z"/>
+    <path d="m140-18 105 28-105 33Z"/>
+    <circle cx="99" cy="-20" r="11" fill="#fff"/>
+  </g>
+
+  <rect x="555" y="2825" width="1370" height="180" rx="60" fill="#2e7148"/>
+  <text x="1240" y="2945" text-anchor="middle" fill="#fff" font-family="Arial,sans-serif" font-size="66" font-weight="900" letter-spacing="5">SCAN • TAP • FLY</text>
+  <text x="1240" y="3120" text-anchor="middle" fill="#172333" opacity=".68" font-family="Arial,sans-serif" font-size="54" font-weight="750">NO APP. NO LOGIN. PLAY INSTANTLY.</text>
+  <line x1="390" y1="3255" x2="2090" y2="3255" stroke="#172333" opacity=".13" stroke-width="4"/>
+  <text x="1240" y="3340" text-anchor="middle" fill="#172333" opacity=".62" font-family="Arial,sans-serif" font-size="46">Want to learn to drive? Naria, Shariatpur</text>
+  <text x="1240" y="3420" text-anchor="middle" fill="#a52439" font-family="Arial,sans-serif" font-size="54" font-weight="900">01577602941</text>
 </svg>

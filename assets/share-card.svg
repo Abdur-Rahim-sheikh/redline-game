@@ -1,32 +1,27 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop stop-color="#050813"/>
-      <stop offset=".65" stop-color="#11102c"/>
-      <stop offset="1" stop-color="#3a081d"/>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#73cfe2"/>
+      <stop offset=".7" stop-color="#c8ead9"/>
+      <stop offset="1" stop-color="#ead18a"/>
     </linearGradient>
-    <radialGradient id="core" cx="40%" cy="35%">
-      <stop stop-color="#fff"/>
-      <stop offset=".22" stop-color="#9bf8ff"/>
-      <stop offset=".55" stop-color="#6078ff"/>
-      <stop offset=".82" stop-color="#d329ff"/>
-      <stop offset="1" stop-color="#ff3157" stop-opacity="0"/>
-    </radialGradient>
   </defs>
-  <rect width="1200" height="630" fill="url(#bg)"/>
-  <circle cx="995" cy="320" r="350" fill="#ff3157" opacity=".08"/>
-  <g fill="none" stroke-width="4">
-    <ellipse cx="965" cy="315" rx="310" ry="156" stroke="#ff3157" opacity=".13"/>
-    <ellipse cx="965" cy="315" rx="245" ry="118" stroke="#70efff" opacity=".18"/>
-    <ellipse cx="965" cy="315" rx="178" ry="82" stroke="#9b6cff" opacity=".24"/>
+  <rect width="1200" height="630" fill="url(#sky)"/>
+  <circle cx="1060" cy="108" r="70" fill="#fff0ac" opacity=".9"/>
+  <path d="M0 525c154-56 274-10 406 6 169 21 292-15 414-6 139 11 229 42 380-8v113H0Z" fill="#75a95e"/>
+  <path d="M880-20c59 55 87 111 93 188 3 40 33 63 74 76l-24 51c-63-14-105-43-112-102-8-68-37-101-74-132Z" fill="#5a4935"/>
+  <g fill="#3f7b45"><circle cx="898" cy="99" r="48"/><circle cx="953" cy="165" r="42"/><circle cx="1040" cy="230" r="40"/></g>
+  <g transform="translate(900 360)" fill="#121927">
+    <ellipse rx="82" ry="38"/>
+    <path d="M-43-8c-54-70-86-86-105-72 33 31 54 66 68 106Z"/>
+    <path d="M-35 10c-62 37-84 61-87 82 35-10 68-29 91-54Z"/>
+    <path d="m77-10 58 15-58 18Z"/>
+    <circle cx="54" cy="-12" r="6" fill="#fff"/>
   </g>
-  <path d="M695 178h137M1093 178h107M710 458h122M1093 458h107" stroke="#ff3157" stroke-width="14"/>
-  <circle cx="965" cy="315" r="115" fill="url(#core)"/>
-  <circle cx="965" cy="315" r="10" fill="#fff"/>
-  <text x="72" y="170" fill="#fff" font-family="Impact,Arial Narrow,sans-serif" font-size="132" font-style="italic">RED<tspan fill="#ff3157">LINE</tspan></text>
-  <text x="80" y="253" fill="#ff9a73" font-family="Arial,sans-serif" font-size="28" font-weight="700" letter-spacing="4">HOLD. RUSH. SURVIVE.</text>
-  <text x="80" y="362" fill="#fff" font-family="Arial,sans-serif" font-size="53" font-weight="800">CAN YOU KEEP CONTROL?</text>
-  <text x="82" y="418" fill="#fff" opacity=".62" font-family="Arial,sans-serif" font-size="28">An instant one-touch reflex challenge.</text>
-  <rect x="80" y="475" width="405" height="67" rx="18" fill="#ff3157"/>
-  <text x="282" y="520" fill="#fff" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="800">NO APP • NO LOGIN</text>
+  <text x="70" y="155" fill="#172333" font-family="Impact,Arial Narrow,sans-serif" font-size="128" font-style="italic">KAK <tspan fill="#2e7148">URAAN</tspan></text>
+  <text x="76" y="235" fill="#2e7148" font-family="Arial,sans-serif" font-size="27" font-weight="800" letter-spacing="4">TAP. FLAP. FLY.</text>
+  <text x="75" y="345" fill="#172333" font-family="Arial,sans-serif" font-size="51" font-weight="850">HOW FAR CAN YOUR CROW FLY?</text>
+  <text x="78" y="402" fill="#172333" opacity=".62" font-family="Arial,sans-serif" font-size="27">Slip through the Bangladeshi koroi branches.</text>
+  <rect x="76" y="458" width="405" height="67" rx="18" fill="#2e7148"/>
+  <text x="278" y="503" fill="#fff" text-anchor="middle" font-family="Arial,sans-serif" font-size="26" font-weight="800">NO APP • NO LOGIN</text>
 </svg>
