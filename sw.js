@@ -1,12 +1,12 @@
-const CACHE_NAME = "kak-uraan-v1.0.2";
+const CACHE_NAME = "kak-uraan-v1.1.0";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./styles.css?v=1.0.2",
-  "./src/app.js",
-  "./src/game.js",
-  "./src/audio.js",
-  "./src/core.js",
+  "./styles.css?v=1.1.0",
+  "./src/app.js?v=1.1.0",
+  "./src/game.js?v=1.1.0",
+  "./src/audio.js?v=1.1.0",
+  "./src/core.js?v=1.1.0",
   "./manifest.webmanifest",
   "./assets/icon.svg",
   "./assets/icon-192.png",

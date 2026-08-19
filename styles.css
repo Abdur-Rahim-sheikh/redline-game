@@ -18,13 +18,18 @@ html,
 body {
   width: 100%;
   height: 100%;
+  min-height: 100%;
   margin: 0;
   overflow: hidden;
   overscroll-behavior: none;
   background: #73cfe2;
 }
 
-body { min-height: 100dvh; }
+body {
+  position: fixed;
+  inset: 0;
+  touch-action: manipulation;
+}
 button, a { -webkit-tap-highlight-color: transparent; }
 button { font: inherit; }
 
@@ -32,10 +37,19 @@ button { font: inherit; }
   position: relative;
   width: 100%;
   height: 100%;
-  min-height: 100dvh;
+  min-height: 100%;
   overflow: hidden;
   isolation: isolate;
   background: #73cfe2;
+}
+
+@supports (height: 100svh) {
+  html,
+  body,
+  .app-shell {
+    height: 100svh;
+    min-height: 100svh;
+  }
 }
 
 #game {
@@ -72,7 +86,6 @@ button { font: inherit; }
   background: rgba(255, 253, 239, 0.82);
   box-shadow: 0 4px 16px rgba(37, 73, 72, 0.13);
   text-align: center;
-  backdrop-filter: blur(7px);
 }
 
 .best-chip span,
@@ -129,7 +142,6 @@ button { font: inherit; }
   color: var(--ink);
   box-shadow: 0 4px 14px rgba(37, 73, 72, 0.13);
   cursor: pointer;
-  backdrop-filter: blur(7px);
 }
 
 .icon-button svg { width: 19px; height: 19px; fill: currentColor; }
@@ -164,7 +176,6 @@ button { font: inherit; }
   background: var(--paper);
   box-shadow: 0 18px 55px rgba(33, 71, 64, 0.22), inset 0 1px 0 #fff;
   text-align: center;
-  backdrop-filter: blur(10px);
 }
 
 .eyebrow {
@@ -304,7 +315,7 @@ h1 span { color: var(--ink); }
 }
 .best-line strong { color: var(--ink); }
 
-.screen--result { background: rgba(54, 111, 104, 0.26); backdrop-filter: blur(7px); }
+.screen--result { background: rgba(54, 111, 104, 0.26); }
 .result-panel { padding-top: 24px; }
 .result-panel h2 {
   margin: 0;

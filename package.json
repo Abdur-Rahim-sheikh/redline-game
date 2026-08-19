@@ -1,6 +1,6 @@
 {
   "name": "kak-uraan-qr-game",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "private": true,
   "type": "module",
   "description": "A dependency-free, tap-to-fly crow game made to launch from a QR code.",

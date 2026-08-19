@@ -124,7 +124,7 @@ git commit -m "Improve KAK URAAN"
 git push
 ```
 
-If an old version remains cached, change `CACHE_NAME` near the top of `sw.js`, for example from `kak-uraan-v1.0.2` to `kak-uraan-v1.0.3`, and deploy again.
+If an old version remains cached, change `CACHE_NAME` near the top of `sw.js`, for example from `kak-uraan-v1.1.0` to `kak-uraan-v1.1.1`, and deploy again.
 
 ## Alternative: free Cloudflare Pages upload
 

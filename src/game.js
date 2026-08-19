@@ -4,8 +4,8 @@ import {
   ellipseIntersectsRectangle,
   formatScore,
   safeStorage,
-} from "./core.js";
-import { AudioEngine } from "./audio.js";
+} from "./core.js?v=1.1.0";
+import { AudioEngine } from "./audio.js?v=1.1.0";
 
 const BEST_SCORE_KEY = "kak-uraan-best-v1";
 const SOUND_KEY = "kak-uraan-muted";
@@ -15,13 +15,17 @@ const CROW_FRAME_COUNT = 3;
 export class CrowFlightGame {
   constructor(canvas, elements, callbacks = {}) {
     this.canvas = canvas;
-    this.context = canvas.getContext("2d", { alpha: false, desynchronized: true });
+    this.context = canvas.getContext("2d", { alpha: false });
+    this.backgroundCanvas = document.createElement("canvas");
+    this.backgroundContext = this.backgroundCanvas.getContext("2d", { alpha: false });
     this.elements = elements;
     this.callbacks = callbacks;
     this.storage = safeStorage();
     this.muted = this.storage.get(SOUND_KEY, "false") === "true";
     this.audio = new AudioEngine({ muted: this.muted });
     this.reduceMotion = globalThis.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+    this.isTouchDevice = (navigator.maxTouchPoints || 0) > 0
+      || (globalThis.matchMedia?.("(pointer: coarse)").matches ?? false);
 
     this.assets = {};
     this.ready = Promise.all([
@@ -34,6 +38,8 @@ export class CrowFlightGame {
     this.width = 0;
     this.height = 0;
     this.pixelRatio = 1;
+    this.viewportOrientation = null;
+    this.resizeFrame = 0;
     this.lastFrame = performance.now();
     this.idleTime = 0;
     this.elapsed = 0;
@@ -70,9 +76,10 @@ export class CrowFlightGame {
   #bindEvents() {
     this.canvas.addEventListener("pointerdown", (event) => {
       if (this.state !== "playing" || event.button > 0) return;
+      if (event.pointerType === "touch" && !event.isPrimary) return;
       event.preventDefault();
       this.#flap();
-    });
+    }, { passive: false });
 
     globalThis.addEventListener("keydown", (event) => {
       if (this.state !== "playing") return;
@@ -82,22 +89,58 @@ export class CrowFlightGame {
       }
     });
 
-    globalThis.addEventListener("resize", () => this.resize(), { passive: true });
-    globalThis.visualViewport?.addEventListener("resize", () => this.resize(), { passive: true });
+    globalThis.addEventListener("resize", () => this.#scheduleResize(), { passive: true });
+    globalThis.addEventListener("orientationchange", () => this.#scheduleResize(true), { passive: true });
+    this.canvas.addEventListener("contextlost", (event) => event.preventDefault());
+    this.canvas.addEventListener("contextrestored", () => this.resize(true));
     document.addEventListener("visibilitychange", () => {
       this.lastFrame = performance.now();
     });
   }
 
-  resize() {
+  #scheduleResize(force = false) {
+    if (this.resizeFrame) return;
+    this.resizeFrame = requestAnimationFrame(() => {
+      this.resizeFrame = 0;
+      this.resize(force);
+    });
+  }
+
+  resize(force = false) {
     const bounds = this.canvas.getBoundingClientRect();
+    const nextWidth = Math.max(280, Math.round(bounds.width));
+    const nextHeight = Math.max(480, Math.round(bounds.height));
+    const nextOrientation = nextWidth >= nextHeight ? "landscape" : "portrait";
+    const nextPixelRatio = Math.min(globalThis.devicePixelRatio || 1, this.isTouchDevice ? 1.5 : 2);
+    const widthChanged = Math.abs(nextWidth - this.width) > 2;
+    const heightChanged = Math.abs(nextHeight - this.height) > 2;
+    const orientationChanged = this.viewportOrientation !== null && nextOrientation !== this.viewportOrientation;
+    const pixelRatioChanged = Math.abs(nextPixelRatio - this.pixelRatio) > 0.01;
+
+    if (!force && this.width > 0 && !widthChanged && !heightChanged && !pixelRatioChanged) return;
+
+    // Mobile address bars constantly change only the visual viewport height.
+    // Resizing the game for those events makes the crow and collision field jump.
+    if (
+      !force
+      && this.state === "playing"
+      && !widthChanged
+      && !orientationChanged
+      && !pixelRatioChanged
+    ) return;
+
     const oldWidth = this.width || bounds.width;
     const oldHeight = this.height || bounds.height;
-    this.width = Math.max(280, bounds.width);
-    this.height = Math.max(480, bounds.height);
-    this.pixelRatio = Math.min(globalThis.devicePixelRatio || 1, 2);
-    this.canvas.width = Math.round(this.width * this.pixelRatio);
-    this.canvas.height = Math.round(this.height * this.pixelRatio);
+    this.width = nextWidth;
+    this.height = nextHeight;
+    this.pixelRatio = nextPixelRatio;
+    this.viewportOrientation = nextOrientation;
+    const canvasWidth = Math.round(this.width * this.pixelRatio);
+    const canvasHeight = Math.round(this.height * this.pixelRatio);
+    if (this.canvas.width !== canvasWidth) this.canvas.width = canvasWidth;
+    if (this.canvas.height !== canvasHeight) this.canvas.height = canvasHeight;
+    this.context.imageSmoothingEnabled = true;
+    this.context.imageSmoothingQuality = "medium";
 
     const scaleX = this.width / oldWidth;
     const scaleY = this.height / oldHeight;
@@ -105,17 +148,18 @@ export class CrowFlightGame {
     this.crow.x = clamp(this.width * 0.28, 84, 155);
     this.crow.y = this.crow.y ? this.crow.y * scaleY : this.height * 0.43;
     for (const obstacle of this.obstacles) obstacle.x *= scaleX;
-    this.#createGradients();
+    this.#createBackgroundLayer();
   }
 
-  #createGradients() {
-    this.skyGradient = this.context.createLinearGradient(0, 0, 0, this.height);
-    this.skyGradient.addColorStop(0, "#73cfe2");
-    this.skyGradient.addColorStop(0.55, "#bee8df");
-    this.skyGradient.addColorStop(1, "#f4d58f");
+  #createBackgroundLayer() {
+    this.backgroundCanvas.width = Math.round(this.width * this.pixelRatio);
+    this.backgroundCanvas.height = Math.round(this.height * this.pixelRatio);
+    this.backgroundContext.setTransform(this.pixelRatio, 0, 0, this.pixelRatio, 0, 0);
+    this.#paintBackground(this.backgroundContext);
   }
 
   start() {
+    this.resize(true);
     this.state = "playing";
     this.elapsed = 0;
     this.score = 0;
@@ -361,7 +405,19 @@ export class CrowFlightGame {
   }
 
   #drawBackground(context) {
-    context.fillStyle = this.skyGradient;
+    if (this.backgroundCanvas.width > 0 && this.backgroundCanvas.height > 0) {
+      context.drawImage(this.backgroundCanvas, 0, 0, this.width, this.height);
+      return;
+    }
+    this.#paintBackground(context);
+  }
+
+  #paintBackground(context) {
+    const skyGradient = context.createLinearGradient(0, 0, 0, this.height);
+    skyGradient.addColorStop(0, "#73cfe2");
+    skyGradient.addColorStop(0.55, "#bee8df");
+    skyGradient.addColorStop(1, "#f4d58f");
+    context.fillStyle = skyGradient;
     context.fillRect(0, 0, this.width, this.height);
 
     const sunX = this.width * 0.78;
@@ -427,8 +483,6 @@ export class CrowFlightGame {
     const bottomWidth = clamp(bottomHeight * (320 / 520), obstacle.width * 1.35, obstacle.width * 2.15);
 
     context.save();
-    context.shadowColor = "rgba(24,58,32,.32)";
-    context.shadowBlur = 8;
     if (this.assets.topBranch.complete && this.assets.topBranch.naturalWidth > 0) {
       context.drawImage(
         this.assets.topBranch,
@@ -494,9 +548,6 @@ export class CrowFlightGame {
     context.save();
     context.translate(this.crow.x, this.crow.y);
     context.rotate(angle);
-    context.shadowColor = "rgba(16,28,48,.25)";
-    context.shadowBlur = 5;
-    context.shadowOffsetY = 3;
 
     if (this.assets.crow.complete && this.assets.crow.naturalWidth >= CROW_FRAME_SIZE * CROW_FRAME_COUNT) {
       context.drawImage(

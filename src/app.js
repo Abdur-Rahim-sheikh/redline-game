@@ -1,5 +1,5 @@
-import { formatScore } from "./core.js";
-import { CrowFlightGame } from "./game.js";
+import { formatScore } from "./core.js?v=1.1.0";
+import { CrowFlightGame } from "./game.js?v=1.1.0";
 
 const byId = (id) => document.getElementById(id);
 
